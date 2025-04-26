@@ -1,6 +1,6 @@
-
 'use client';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { fetchMovies } from '../lib/omdb';
 
 export default function HomePage() {
@@ -9,7 +9,7 @@ export default function HomePage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
   const [favorites, setFavorites] = useState<string[]>([]);
 
   useEffect(() => {
@@ -27,10 +27,19 @@ export default function HomePage() {
     loadDefaultMovies();
   }, []);
 
+  useEffect(() => {
+    const savedFavorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    setFavorites(savedFavorites);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+  }, [favorites]);
+
   const handleSearch = async () => {
     setError('');
     if (!query) {
-      alert("Введите название фильма!");
+      alert('Введите название фильма!');
       return;
     }
     try {
@@ -52,31 +61,37 @@ export default function HomePage() {
   };
 
   return (
-    <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-black'} min-h-screen p-6`}> 
+    <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-black'} min-h-screen p-6`}>
       <div className="max-w-2xl mx-auto">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">🎬 Movie Explorer</h1>
-          <button
-            onClick={() => setDarkMode(!darkMode)}
-            className="px-3 py-1 border rounded"
-          >
-            {darkMode ? '☀️ Light' : '🌙 Dark'}
-          </button>
+          <div className="flex gap-4 items-center">
+            <Link href="/" className="text-blue-500 hover:underline">Главная</Link>
+            <Link href="/favorites" className="text-blue-500 hover:underline">Избранные ⭐</Link>
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="px-3 py-1 border rounded"
+            >
+              {darkMode ? '☀️ Light' : '🌙 Dark'}
+            </button>
+          </div>
         </div>
 
-        <input
-          type="text"
-          className="border p-2 w-full rounded text-black"
-          placeholder="Название фильма..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        <button
-          className="mt-2 px-4 py-2 bg-blue-600 text-white rounded"
-          onClick={handleSearch}
-        >
-          Найти
-        </button>
+        <div className="flex gap-2 mb-4">
+          <input
+            type="text"
+            className="border p-2 w-full rounded text-black"
+            placeholder="Название фильма..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          <button
+            className="px-4 py-2 bg-blue-600 text-white rounded"
+            onClick={handleSearch}
+          >
+            Найти
+          </button>
+        </div>
 
         {error && <p className="text-red-500 mt-4">{error}</p>}
         {loading && <p className="text-gray-500 mt-4 animate-pulse">Загрузка...</p>}
