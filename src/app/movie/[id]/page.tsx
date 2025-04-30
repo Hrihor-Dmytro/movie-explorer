@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { fetchMovieById } from '../../lib/omdb';
+import { fetchMovieById } from '../../../lib/omdb';
 
 export default function MovieDetailPage() {
   const { id } = useParams();
