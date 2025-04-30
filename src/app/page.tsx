@@ -78,12 +78,13 @@ export default function HomePage() {
         </div>
 
         <div className="flex gap-2 mb-4">
-          <input
-            type="text"
-            className="border p-2 w-full rounded text-black"
-            placeholder="Название фильма..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
+        <input
+          type="text"
+          className="border p-2 w-full rounded text-black"
+          placeholder="Название фильма..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
           />
           <button
             className="px-4 py-2 bg-blue-600 text-white rounded"
