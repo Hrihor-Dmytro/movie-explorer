@@ -1,3 +1,4 @@
+
 'use client';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
@@ -12,7 +13,6 @@ export default function MovieDetailPage() {
       if (typeof id === 'string') {
         const data = await fetchMovieById(id);
         setMovie(data);
-        console.log('Movie data:', data);
       }
     };
     loadMovie();
