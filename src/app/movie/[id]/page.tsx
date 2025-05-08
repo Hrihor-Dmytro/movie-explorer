@@ -29,7 +29,7 @@ export default function MovieDetailPage() {
       <p><strong>Актёры:</strong> {movie.Actors}</p>
       <p className="mt-2">{movie.Plot}</p>
       {movie.Poster !== 'N/A' && (
-        <img src={movie.Poster} alt={movie.Title} className="mt-4 w-64" />
+        <img src={movie.Poster} alt={movie.Title} className="mt-4 w-64 rounded shadow-lg" />
       )}
     </div>
   );

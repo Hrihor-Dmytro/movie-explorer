@@ -12,18 +12,15 @@ export default function HomePage() {
   const [darkMode, setDarkMode] = useState(false);
   const [favorites, setFavorites] = useState<string[]>([]);
 
-  // Загрузка избранного из localStorage
   useEffect(() => {
     const savedFavorites = JSON.parse(localStorage.getItem('favorites') || '[]');
     setFavorites(savedFavorites);
   }, []);
 
-  // Сохраняем избранное в localStorage
   useEffect(() => {
     localStorage.setItem('favorites', JSON.stringify(favorites));
   }, [favorites]);
 
-  // Загрузка фильмов по умолчанию
   useEffect(() => {
     const loadDefaultMovies = async () => {
       try {
@@ -40,7 +37,6 @@ export default function HomePage() {
     loadDefaultMovies();
   }, []);
 
-  // Поиск фильмов при смене страницы
   useEffect(() => {
     if (!query) return;
     handleSearch();
@@ -73,7 +69,6 @@ export default function HomePage() {
   return (
     <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-black'} min-h-screen p-6`}>
       <div className="max-w-2xl mx-auto">
-        {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">🎬 Movie Explorer</h1>
           <div className="flex gap-4 items-center">
@@ -88,7 +83,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Поиск */}
         <div className="flex gap-2 mb-4">
           <input
             type="text"
@@ -109,14 +103,12 @@ export default function HomePage() {
           </button>
         </div>
 
-        {/* Ошибка или загрузка */}
         {error && <p className="text-red-500 mt-4">{error}</p>}
         {loading && <p className="text-gray-500 mt-4 animate-pulse">Загрузка...</p>}
 
-        {/* Список фильмов */}
         <ul className="mt-6 space-y-4">
           {results.map((movie) => (
-            <li key={movie.imdbID} className="border p-4 rounded">
+            <li key={movie.imdbID} className="border p-4 rounded animate-fade-in">
               <div className="flex justify-between items-center">
                 <div>
                   <Link
@@ -138,7 +130,6 @@ export default function HomePage() {
           ))}
         </ul>
 
-        {/* Пагинация */}
         {results.length > 0 && (
           <div className="flex justify-between mt-6">
             <button
